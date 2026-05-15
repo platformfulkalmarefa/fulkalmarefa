@@ -1,0 +1,566 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>منصة فلك المعرفة</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background: radial-gradient(circle at top right, #06162e 0%, #050a07 100%);
+            background-attachment: fixed;
+            min-height: 100vh;
+            color: white;
+            overflow-x: hidden;
+        }
+
+        body::before {
+            content: "";
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            background-image: radial-gradient(rgba(255, 255, 255, 0.15) 1px, transparent 1px);
+            background-size: 50px 50px;
+            opacity: 0.4;
+            z-index: -1;
+        }
+
+        .navbar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 12px 30px;
+            background: rgba(5, 10, 20, 0.7);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(20px);
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 1000;
+        }
+
+        .right-group {
+            display: flex;
+            align-items: center;
+            gap: 25px;
+        }
+
+        .right-brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            cursor: pointer;
+            font-size: 22px;
+            font-weight: bold;
+            user-select: none;
+        }
+
+        .card-brand {
+            justify-content: center;
+            margin-bottom: 30px;
+            font-size: 24px;
+        }
+
+        .brand-icon-wrapper {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 42px;
+            height: 42px;
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid rgba(0, 210, 255, 0.15);
+            border-radius: 50%;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+            transition: 0.3s ease;
+        }
+
+        .right-brand:hover .brand-icon-wrapper, .card-brand .brand-icon-wrapper {
+            border-color: #00d2ff;
+            box-shadow: 0 0 20px rgba(0, 210, 255, 0.5);
+        }
+
+        .brand-text-white {
+            color: #ffffff !important;
+        }
+
+        .brand-accent-blue {
+            color: #00d2ff !important;
+            text-shadow: 0 0 10px rgba(0, 210, 255, 0.4);
+        }
+
+        .hat-logo-svg {
+            width: 24px;
+            height: 24px;
+            filter: drop-shadow(0 2px 4px rgba(0, 114, 255, 0.3));
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 5px;
+        }
+
+        .nav-links li a {
+            text-decoration: none;
+            color: #d1d5db;
+            padding: 8px 14px;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 500;
+            transition: 0.3s ease;
+        }
+
+        .nav-links li a:hover {
+            background: rgba(0, 150, 255, 0.15);
+            color: #00d2ff;
+        }
+
+        .left-container {
+            display: flex;
+            gap: 12px;
+            align-items: center;
+        }
+
+        .signup-btn, .login-btn, .submit-btn, .logout-btn, .start-btn {
+            background: linear-gradient(135deg, #0052d4, #4364f7, #6fb1fc);
+            background-size: 200% 100%;
+            color: white;
+            border: none;
+            padding: 10px 24px;
+            border-radius: 12px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.4s ease;
+        }
+
+        .login-btn {
+            background: rgba(255, 255, 255, 0.06);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+        }
+
+        .login-btn:hover {
+            background: rgba(255, 255, 255, 0.15);
+            border-color: #00d2ff;
+            transform: translateY(-2px);
+        }
+
+        .logout-btn {
+            background: linear-gradient(135deg, #d31027, #ea0043);
+            display: none;
+        }
+
+        .submit-btn {
+            width: 100%;
+            padding: 14px;
+            margin-top: 10px;
+        }
+
+        .start-btn {
+            display: inline-block;
+            margin-top: 30px;
+            padding: 15px 45px;
+            font-size: 16px;
+            box-shadow: 0 4px 20px rgba(0, 114, 255, 0.4);
+        }
+
+        .signup-btn:hover, .submit-btn:hover, .start-btn:hover, .logout-btn:hover {
+            background-position: 100% 0;
+            box-shadow: 0 6px 25px rgba(0, 114, 255, 0.6);
+            transform: translateY(-2px);
+        }
+
+        /* تنسيق زر جوجل الديكوري والوهمي الحواف */
+        .google-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            width: 100%;
+            background: rgba(255, 255, 255, 0.92);
+            color: #2c3e50;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            padding: 12px;
+            margin-top: 14px;
+            border-radius: 12px;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .google-btn:hover {
+            background: #ffffff;
+            box-shadow: 0 5px 20px rgba(255, 255, 255, 0.25);
+            transform: translateY(-2px);
+        }
+
+        .google-svg-icon {
+            width: 18px;
+            height: 18px;
+        }
+
+        .page-section {
+            display: none;
+            padding-top: 140px;
+            min-height: 100vh;
+            justify-content: center;
+            align-items: center;
+            padding-bottom: 60px;
+        }
+
+        .active {
+            display: flex;
+        }
+
+        .auth-card {
+            background: rgba(10, 25, 50, 0.45);
+            padding: 40px;
+            border-radius: 28px;
+            backdrop-filter: blur(25px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            width: 100%;
+            max-width: 500px;
+            box-shadow: 0 25px 60px rgba(0,0,0,0.6);
+        }
+
+        .auth-card h2 {
+            margin-bottom: 25px;
+            color: #ffffff;
+            font-size: 22px;
+            text-align: center;
+            font-weight: 600;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            padding-bottom: 15px;
+        }
+
+        .input-group {
+            margin-bottom: 22px;
+            text-align: right;
+            position: relative;
+        }
+
+        .input-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: #00d2ff;
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        .input-group input {
+            width: 100%;
+            padding: 14px 16px;
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            background: rgba(255, 255, 255, 0.05);
+            color: white;
+            outline: none;
+            font-size: 15px;
+            text-align: right;
+            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+        }
+
+        .input-group input:focus {
+            background: rgba(0, 114, 255, 0.08);
+            border-color: #00d2ff;
+            box-shadow: 0 0 15px rgba(0, 210, 255, 0.4), inset 0 0 5px rgba(0, 210, 255, 0.2);
+        }
+
+        input::-ms-reveal,
+        input::-ms-clear {
+            display: none !important;
+        }
+
+        .toggle-link {
+            margin-top: 25px;
+            font-size: 14px;
+            color: #b0b3b8;
+            text-align: center;
+        }
+
+        .toggle-link span {
+            color: #00d2ff;
+            cursor: pointer;
+            font-weight: 600;
+            text-decoration: none;
+            margin-right: 5px;
+            transition: 0.2s;
+        }
+
+        .toggle-link span:hover {
+            color: #00a3ff;
+            text-shadow: 0 0 8px rgba(0, 210, 255, 0.4);
+        }
+
+        .hero-text {
+            text-align: center;
+            padding: 0 20px;
+        }
+
+        .hero-text h1 {
+            font-size: 48px;
+            margin-bottom: 20px;
+            color: #00d2ff;
+            text-shadow: 0 0 20px rgba(0, 210, 255, 0.3);
+        }
+        
+        #user-display-name {
+            font-size: 14px;
+            color: #00d2ff;
+            margin-left: 15px;
+            font-weight: bold;
+            display: none;
+        }
+
+        .section-title {
+            font-size: 32px;
+            color: #00d2ff;
+            text-align: center;
+        }
+
+        @media (max-width: 900px) {
+            .nav-links { display: none; }
+            .navbar { padding: 12px 20px; }
+            .hero-text h1 { font-size: 36px; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- شريط التنقل العلوي -->
+    <nav class="navbar">
+        <div class="right-group">
+            <div class="right-brand" onclick="showSection('home')">
+                <div class="brand-icon-wrapper">
+                    <svg class="hat-logo-svg" viewBox="0 0 24 24" fill="none" xmlns="w3.org">
+                        <path d="M12 3L2 8L12 13L22 8L12 3Z" fill="#00d2ff" stroke="#0072ff" stroke-width="1.5" stroke-linejoin="round"/>
+                        <path d="M5 11V15.5C5 17 8 19 12 19C16 19 19 17 19 15.5V11" stroke="#0072ff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        <path d="M18 9V14.5C18 15.5 17.2 16 16.5 16.5" stroke="#00d2ff" stroke-width="1.5" stroke-linecap="round"/>
+                        <circle cx="16.5" cy="16.5" r="1.2" fill="#00ffff"/>
+                    </svg>
+                </div>
+                <span><span class="brand-text-white">منصة</span> <span class="brand-accent-blue">فلك المعرفة</span></span>
+            </div>
+            <ul class="nav-links">
+                <li><a href="javascript:void(0)" onclick="showSection('home')">الرئيسية</a></li>
+                <li><a href="javascript:void(0)" onclick="showSection('courses')">الدورات</a></li>
+                <li><a href="javascript:void(0)" onclick="showSection('library')">المكتبة</a></li>
+                <li><a href="javascript:void(0)" onclick="showSection('exams')">الاختبارات</a></li>
+                <li><a href="javascript:void(0)">حقول التوجيهي</a></li>
+                <li><a href="javascript:void(0)">الدعم الفني</a></li>
+            </ul>
+        </div>
+        <div class="left-container" id="user-box">
+            <span id="user-display-name"></span>
+            <button class="login-btn" id="nav-login-btn" onclick="showSection('login')">تسجيل الدخول</button>
+            <button class="signup-btn" id="nav-signup-btn" onclick="showSection('signup')">إنشاء حساب</button>
+            <button class="logout-btn" id="nav-logout-btn" onclick="localLogout()">خروج</button>
+        </div>
+    </nav>
+
+    <!-- واجهة الصفحة الرئيسية -->
+    <section id="home" class="page-section active">
+        <div class="hero-text">
+            <h1>مرحباً بك في منصة فلك المعرفة</h1>
+            <p style="font-size: 18px; margin-top: 10px; color: #d1d5db;">بوابتك الذكية للتعلم والتفوق</p>
+            <button class="start-btn" onclick="showSection('signup')">ابدأ الآن</button>
+        </div>
+    </section>
+
+    <!-- واجهة صفحة الدورات (فارغة) -->
+    <section id="courses" class="page-section">
+        <div class="hero-text">
+            <h1 class="section-title">قسم الدورات الدراسية</h1>
+            <p style="font-size: 16px; margin-top: 10px; color: #b0b3b8;">هذه الصفحة فارغة ومجهزة بالكامل.</p>
+        </div>
+    </section>
+
+    <!-- واجهة صفحة المكتبة (فارغة) -->
+    <section id="library" class="page-section">
+        <div class="hero-text">
+            <h1 class="section-title">المكتبة الرقمية</h1>
+            <p style="font-size: 16px; margin-top: 10px; color: #b0b3b8;">هذه الصفحة فارغة ومجهزة لإضافة الكتب والملفات لاحقاً.</p>
+        </div>
+    </section>
+
+    <!-- واجهة صفحة الاختبارات (فارغة) -->
+    <section id="exams" class="page-section">
+        <div class="hero-text">
+            <h1 class="section-title">الاختبارات التفاعلية</h1>
+            <p style="font-size: 16px; margin-top: 10px; color: #b0b3b8;">هذه الصفحة فارغة ومجهزة لإضافة الأسئلة والامتحانات لاحقاً.</p>
+        </div>
+    </section>
+
+    <!-- واجهة تسجيل الدخول -->
+    <section id="login" class="page-section">
+        <div class="auth-card">
+            
+            <div class="right-brand card-brand" onclick="showSection('home')">
+                <div class="brand-icon-wrapper">
+                    <svg class="hat-logo-svg" viewBox="0 0 24 24" fill="none" xmlns="w3.org">
+                        <path d="M12 3L2 8L12 13L22 8L12 3Z" fill="#00d2ff" stroke="#0072ff" stroke-width="1.5" stroke-linejoin="round"/>
+                        <path d="M5 11V15.5C5 17 8 19 12 19C16 19 19 17 19 15.5V11" stroke="#0072ff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        <path d="M18 9V14.5C18 15.5 17.2 16 16.5 16.5" stroke="#00d2ff" stroke-width="1.5" stroke-linecap="round"/>
+                        <circle cx="16.5" cy="16.5" r="1.2" fill="#00ffff"/>
+                    </svg>
+                </div>
+                <span><span class="brand-text-white">منصة</span> <span class="brand-accent-blue">فلك المعرفة</span></span>
+            </div>
+            
+            <h2>تسجيل الدخول</h2>
+            <div class="input-group">
+                <label>البريد الإلكتروني</label>
+                <input type="email" id="login-email" placeholder="أدخل بريدك الإلكتروني">
+            </div>
+            <div class="input-group">
+                <label>كلمة المرور</label>
+                <input type="password" id="login-pass" placeholder="أدخل كلمة المرور">
+            </div>
+            <button class="submit-btn" onclick="localLogin()">تسجيل الدخول</button>
+            
+            <!-- زر جوجل الوهمي والديكوري بلغة الـ SVG المباشرة والآمنة محلياً -->
+            <button class="google-btn" onclick="googleMockLogin()">
+                <svg class="google-svg-icon" viewBox="0 0 24 24" xmlns="w3.org">
+                    <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/>
+                    <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/>
+                    <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l2.85-2.22.81-.63z" fill="#FBBC05"/>
+                    <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z" fill="#EA4335"/>
+                </svg>
+                تسجيل الدخول باستخدام جوجل
+            </button>
+
+            <div class="toggle-link">ليس لديك حساب؟ <span onclick="showSection('signup')">إنشاء حساب جديد</span></div>
+        </div>
+    </section>
+
+    <!-- واجهة إنشاء حساب جديد -->
+    <section id="signup" class="page-section">
+        <div class="auth-card">
+            
+            <div class="right-brand card-brand" onclick="showSection('home')">
+                <div class="brand-icon-wrapper">
+                    <svg class="hat-logo-svg" viewBox="0 0 24 24" fill="none" xmlns="w3.org">
+                        <path d="M12 3L2 8L12 13L22 8L12 3Z" fill="#00d2ff" stroke="#0072ff" stroke-width="1.5" stroke-linejoin="round"/>
+                        <path d="M5 11V15.5C5 17 8 19 12 19C16 19 19 17 19 15.5V11" stroke="#0072ff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        <path d="M18 9V14.5C18 15.5 17.2 16 16.5 16.5" stroke="#00d2ff" stroke-width="1.5" stroke-linecap="round"/>
+                        <circle cx="16.5" cy="16.5" r="1.2" fill="#00ffff"/>
+                    </svg>
+                </div>
+                <span><span class="brand-text-white">منصة</span> <span class="brand-accent-blue">فلك المعرفة</span></span>
+            </div>
+
+            <h2>إنشاء حساب جديد</h2>
+            <div class="input-group">
+                <label>الأسم الثلاثي</label>
+                <input type="text" id="signup-name" placeholder="أدخل أسمك الثلاثي">
+            </div>
+            <div class="input-group">
+                <label>البريد الإلكتروني</label>
+                <input type="email" id="signup-email" placeholder="أدخل بريدك الإلكتروني">
+            </div>
+            <div class="input-group">
+                <label>كلمة المرور</label>
+                <input type="password" id="signup-pass" placeholder="أدخل كلمة المرور">
+            </div>
+            <button class="submit-btn" onclick="localRegister()">إنشاء حساب</button>
+            
+            <button class="google-btn" onclick="googleMockLogin()">
+                <svg class="google-svg-icon" viewBox="0 0 24 24" xmlns="w3.org">
+                    <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/>
+                    <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/>
+                    <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l2.85-2.22.81-.63z" fill="#FBBC05"/>
+                    <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z" fill="#EA4335"/>
+                </svg>
+                تسجيل الدخول باستخدام جوجل
+            </button>
+
+            <div class="toggle-link">لديك حساب بالفعل؟ <span onclick="showSection('login')">تسجيل الدخول</span></div>
+        </div>
+    </section>
+
+    <!-- نظام التحكم والتنقل (JavaScript) -->
+    <script>
+        function showSection(sectionId) {
+            document.querySelectorAll('.page-section').forEach(section => {
+                section.classList.remove('active');
+            });
+            const targetSection = document.getElementById(sectionId);
+            if (targetSection) {
+                targetSection.classList.add('active');
+            }
+        }
+
+        function localRegister() {
+            const name = document.getElementById('signup-name').value.trim();
+            const email = document.getElementById('signup-email').value.trim();
+            const pass = document.getElementById('signup-pass').value;
+
+            if (!name || !email || !pass) {
+                alert('الرجاء تعبئة كافة الحقول المطلوبة بما فيها أسمك الثلاثي!');
+                return;
+            }
+
+            localStorage.setItem('userName', name);
+            localStorage.setItem('userEmail', email);
+            localStorage.setItem('userPass', pass);
+
+            alert('تم إنشاء الحساب بنجاح يا ' + name + '! يمكنك الآن تسجيل الدخول.');
+            showSection('login');
+        }
+
+        function localLogin() {
+            const email = document.getElementById('login-email').value.trim();
+            const pass = document.getElementById('login-pass').value;
+
+            const savedName = localStorage.getItem('userName');
+            const savedEmail = localStorage.getItem('userEmail');
+            const savedPass = localStorage.getItem('userPass');
+
+            if (email === savedEmail && pass === savedPass && email !== null) {
+                alert('تم تسجيل الدخول بنجاح! مرحباً بك.');
+                handleUserLoginSuccess(savedName || email);
+            } else {
+                alert('خطأ في البريد الإلكتروني أو كلمة المرور! تأكد من البيانات أو أنشئ حساباً جديداً.');
+            }
+        }
+
+        function googleMockLogin() {
+            alert('تم محاكاة الاتصال الافتراضي بحساب جوجل للتجربة والتصميم!');
+            handleUserLoginSuccess('طالب فلك المعرفة');
+        }
+
+        function handleUserLoginSuccess(displayName) {
+            document.getElementById('user-display-name').textContent = displayName;
+            document.getElementById('user-display-name').style.display = 'inline';
+            document.getElementById('nav-logout-btn').style.display = 'block';
+            document.getElementById('nav-login-btn').style.display = 'none';
+            document.getElementById('nav-signup-btn').style.display = 'none';
+            showSection('home');
+        }
+
+        function localLogout() {
+            document.getElementById('user-display-name').style.display = 'none';
+            document.getElementById('nav-logout-btn').style.display = 'none';
+            document.getElementById('nav-login-btn').style.display = 'block';
+            document.getElementById('nav-signup-btn').style.display = 'block';
+            
+            document.getElementById('login-email').value = '';
+            document.getElementById = '';
+            
+            alert('تم تسجيل الخروج بنجاح.');
+            showSection('home');
+        }
+
+        window.onload = function() {
+            showSection('home');
+        }
+    </script>
+</body>
+</html>
